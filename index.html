@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>فحص نطاقات السريع للمنشآت الصغيرة — أين تضيع نقاط التوطين؟</title>
+<meta name="description" content="أداة مجانية تحسب نسبة التوطين الموزونة لمنشأتك وتكشف العقود غير الموثقة والرواتب التي تُحتسب بنصف وزن، مع خطوات التحسين. البيانات تُحسب في متصفحك ولا تُرسل لأي جهة.">
+<style>
+  :root { --bg:#f6f7f9; --card:#fff; --ink:#1b2430; --muted:#5b6675; --brand:#0b6b4d; --warn:#b45309; --bad:#b91c1c; --line:#e3e7ec; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:"Segoe UI",Tahoma,Arial,sans-serif; background:var(--bg); color:var(--ink); line-height:1.7; }
+  header { background:var(--brand); color:#fff; padding:28px 16px; }
+  .wrap { max-width:820px; margin:0 auto; padding:0 16px; }
+  h1 { margin:0 0 6px; font-size:1.6rem; }
+  header p { margin:0; opacity:.92; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; margin:18px 0; }
+  h2 { margin:0 0 12px; font-size:1.2rem; }
+  label { display:block; font-weight:600; margin:12px 0 4px; }
+  .hint { font-weight:400; color:var(--muted); font-size:.85rem; }
+  input, textarea { width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font:inherit; background:#fff; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:0 16px; }
+  @media (max-width:640px){ .grid{grid-template-columns:1fr;} }
+  button { background:var(--brand); color:#fff; border:0; border-radius:8px; padding:12px 20px; font:inherit; font-weight:700; cursor:pointer; margin-top:16px; }
+  button.secondary { background:#fff; color:var(--brand); border:1px solid var(--brand); }
+  .result { display:none; }
+  .rate { font-size:2.2rem; font-weight:800; }
+  .ok { color:var(--brand); } .mid { color:var(--warn); } .low { color:var(--bad); }
+  ul { padding-inline-start:20px; }
+  .note { font-size:.85rem; color:var(--muted); }
+  .price { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:640px){ .price{grid-template-columns:1fr;} }
+  .tier { border:1px solid var(--line); border-radius:10px; padding:14px; }
+  .tier b.p { display:block; font-size:1.3rem; color:var(--brand); }
+  #msg { margin-top:10px; font-weight:600; }
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <h1>فحص نطاقات السريع</h1>
+  <p>اكتشف خلال دقيقتين أين تضيع نقاط التوطين في منشأتك، وكم تحتاج للوصول إلى هدفك.</p>
+</div></header>
+
+<main class="wrap">
+  <section class="card">
+    <h2>1) أدخل أعداد منشأتك (بدون أسماء)</h2>
+    <p class="note">الحساب يتم داخل متصفحك فقط ولا تُرسل هذه الأرقام لأي خادم إلا إن ضغطت «اطلب تقريري» لاحقًا.</p>
+    <div class="grid">
+      <div><label>سعوديون عقدهم موثق في قوى وراتبهم في التأمينات 4,000 ريال فأكثر <span class="hint">(يُحتسبون 1)</span></label><input id="n1" type="number" min="0" value="0"></div>
+      <div><label>سعوديون موثقون وراتبهم 3,000–3,999 <span class="hint">(يُحتسبون 0.5)</span></label><input id="n2" type="number" min="0" value="0"></div>
+      <div><label>سعوديون موثقون وراتبهم أقل من 3,000 <span class="hint">(لا يُحتسبون)</span></label><input id="n3" type="number" min="0" value="0"></div>
+      <div><label>سعوديون عقدهم غير موثق في قوى <span class="hint">(لا يُحتسبون)</span></label><input id="n4" type="number" min="0" value="0"></div>
+      <div><label>غير السعوديين</label><input id="n5" type="number" min="0" value="0"></div>
+      <div><label>النسبة المطلوبة لنشاطك وحجمك (%) <span class="hint">(من لوحة نطاقات في قوى)</span></label><input id="target" type="number" min="0" max="100" step="0.1" value="0"></div>
+    </div>
+    <button id="calc" type="button">احسب</button>
+  </section>
+
+  <section class="card result" id="result">
+    <h2>2) النتيجة التقديرية</h2>
+    <div class="rate" id="rate"></div>
+    <p id="status"></p>
+    <ul id="tips"></ul>
+    <p class="note">تقدير مبني على قواعد الاحتساب المنشورة (توثيق العقد في قوى + حد الراتب في التأمينات). المرجع الرسمي دائمًا هو لوحة نطاقات في قوى؛ توجد استثناءات وحالات خاصة لا تغطيها هذه الأداة.</p>
+  </section>
+
+  <section class="card">
+    <h2>هل تريد تقريرًا مفصلًا ولوحة HR جاهزة؟</h2>
+    <div class="price">
+      <div class="tier"><b>فحص ومراجعة نطاقات</b><b class="p">149 ريال</b>
+        تقرير من صفحتين: أين تضيع النقاط، وخطة تحسين مرتبة بالأولوية، من ملف الموظفين لديك (يُحذف بعد التسليم).</div>
+      <div class="tier"><b>لوحة HR عربية مخصصة</b><b class="p">699 ريال</b>
+        لوحة Excel/Google Sheets: التوطين، الدوران، الإجازات، تنبيهات العقود، مضبوطة على بيانات منشأتك مع شرح استخدام.</div>
+    </div>
+    <p class="note">ضمان: إن لم تجد في التقرير أي توصية قابلة للتنفيذ تعيد لك المبلغ كاملًا خلال 7 أيام.</p>
+    <form id="lead">
+      <label>اسم المنشأة</label><input id="company" required maxlength="120">
+      <label>واتساب أو بريد للتواصل</label><input id="contact" required maxlength="200">
+      <label>ما الذي تريده؟ <span class="hint">(اختياري)</span></label>
+      <textarea id="details" rows="3" maxlength="1500" placeholder="مثال: عدد الموظفين التقريبي، وما المشكلة التي تواجهها"></textarea>
+      <button type="submit">اطلب تقريري</button>
+      <div id="msg" role="status"></div>
+    </form>
+  </section>
+</main>
+
+<script>
+(function(){
+  const CONTACT_EMAIL = 'waleedalhabib11@gmail.com';
+  const CONTACT_WA = ''; // international number without + (e.g. 9665XXXXXXXX); empty = email only
+  const $ = id => document.getElementById(id);
+  const num = id => Math.max(0, Number($(id).value) || 0);
+  let summary = '';
+
+  function calc(){
+    const n1=num('n1'), n2=num('n2'), n3=num('n3'), n4=num('n4'), n5=num('n5'), t=num('target');
+    const total = n1+n2+n3+n4+n5;
+    if (!total) { alert('أدخل أعداد الموظفين أولًا'); return; }
+    const w = n1 + 0.5*n2;
+    const rate = w/total*100;
+    $('rate').textContent = rate.toFixed(1) + '٪ نسبة موزونة';
+    $('rate').className = 'rate ' + (t && rate>=t ? 'ok' : (t && rate>=t*0.8 ? 'mid' : (t ? 'low' : '')));
+    const tips = [];
+    let status;
+    if (t) {
+      if (rate >= t) status = 'أنت عند أو فوق الهدف (' + t + '٪) حسب هذا التقدير.';
+      else {
+        const tt = t/100;
+        const need = Math.ceil((tt*total - w)/(1-tt));
+        status = 'أنت دون الهدف (' + t + '٪) بفارق ' + (t-rate).toFixed(1) + ' نقطة.';
+        if (isFinite(need) && need>0) tips.push('الوصول بالتوظيف وحده يحتاج نحو <b>' + need + '</b> سعوديين إضافيين محتسبين بوزن كامل.');
+      }
+    } else status = 'أدخل النسبة المطلوبة لنشاطك لمقارنة نتيجتك بالهدف.';
+    $('status').textContent = status;
+
+    if (n4>0) tips.push('لديك <b>' + n4 + '</b> سعوديين بعقود غير موثقة: توثيق العقود في قوى قد يضيف حتى <b>' + n4 + '</b> إلى الاحتساب دون توظيف جديد (حسب رواتبهم).');
+    if (n2>0) tips.push('<b>' + n2 + '</b> سعوديين بين 3,000 و3,999 يُحتسبون بنصف وزن: رفع المسجّل في التأمينات إلى 4,000 يضيف <b>' + (n2*0.5) + '</b> نقطة.');
+    if (n3>0) tips.push('<b>' + n3 + '</b> سعوديين دون 3,000 لا يُحتسبون: راجع صحة الراتب المسجّل في التأمينات والبدلات.');
+    tips.push('تأكد أن الراتب في قوى والتأمينات متطابق تمامًا؛ أي اختلاف قد يخفّض الاحتساب.');
+    $('tips').innerHTML = tips.map(x=>'<li>'+x+'</li>').join('');
+    $('result').style.display = 'block';
+    summary = 'نتيجة الفحص: نسبة موزونة ' + rate.toFixed(1) + '٪، الهدف ' + (t||'غير محدد') + '٪، إجمالي ' + total + ' (سعودي موثق 4000+: ' + n1 + '، 3000-3999: ' + n2 + '، <3000: ' + n3 + '، غير موثق: ' + n4 + '، غير سعودي: ' + n5 + ')';
+    $('result').scrollIntoView({behavior:'smooth'});
+  }
+  $('calc').addEventListener('click', calc);
+
+  $('lead').addEventListener('submit', function(e){
+    e.preventDefault();
+    const q = new URLSearchParams(location.search);
+    const utm = ['utm_source','utm_medium','utm_campaign'].map(k=>q.get(k)?k+'='+q.get(k):'').filter(Boolean).join('&');
+    const company = $('company').value.trim();
+    const contact = $('contact').value.trim();
+    const text = ['طلب تقرير نطاقات',
+      'المنشأة: ' + company,
+      'وسيلة التواصل: ' + contact,
+      $('details').value.trim() ? 'التفاصيل: ' + $('details').value.trim() : '',
+      summary,
+      utm ? 'مصدر: ' + utm : ''].filter(Boolean).join('\n');
+    const mail = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('طلب تقرير نطاقات - ' + company) + '&body=' + encodeURIComponent(text);
+    if (CONTACT_WA) {
+      $('msg').innerHTML = 'اختر وسيلة الإرسال: <a href="https://wa.me/' + CONTACT_WA + '?text=' + encodeURIComponent(text) + '">واتساب</a> أو <a href="' + mail + '">البريد</a>';
+    } else {
+      $('msg').innerHTML = 'اضغط لإرسال الطلب بالبريد: <a href="' + mail + '">إرسال الطلب</a><br><small>أو راسلنا مباشرة على ' + CONTACT_EMAIL + '</small>';
+      location.href = mail;
+    }
+  });
+})();
+</script>
+</body>
+</html>
