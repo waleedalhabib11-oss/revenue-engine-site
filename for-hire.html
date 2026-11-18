@@ -3,31 +3,45 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>أنظمة Excel عربية — للبيع والخدمات</title>
-<meta name="description" content="نظام مبيعات وتقسيط وفواتير Excel عربي — 12 دولار. خدمات Sheets مخصصة عبر مستقل."/>
+<title>أنظمة Excel عربية للمنشآت — منتج 12$ وخدمات مخصصة</title>
+<meta name="description" content="نظام مبيعات وتقسيط وفواتير Excel/Sheets عربي جاهز بـ12 دولار، مع خدمات تخصيص وHR ونطاقات للمنشآت السعودية."/>
+<meta name="keywords" content="Excel عربي, تقسيط, فواتير, Google Sheets, مستقل, منشآت, نطاقات"/>
 <style>
 body{font-family:Tahoma,Arial,sans-serif;background:#07140f;color:#eef6f1;margin:0;padding:24px;line-height:1.8;max-width:720px}
 a{color:#86efac} .c{background:#10261c;border:1px solid #1a3328;border-radius:14px;padding:16px;margin:12px 0}
-.btn{display:inline-block;background:#166534;color:#fff;padding:10px 16px;border-radius:10px;text-decoration:none;margin-inline-end:8px}
+.btn{display:inline-block;background:#166534;color:#fff;padding:10px 16px;border-radius:10px;text-decoration:none;margin:6px 6px 6px 0}
 </style>
 </head>
 <body>
 <h1>أنظمة Excel / Google Sheets عربية للمنشآت</h1>
-<p>منتج جاهز + خدمات مخصصة. الدفع عبر المنصات الرسمية فقط.</p>
+<p>منتج رقمي جاهز + خدمات مخصصة. الدفع عبر المنصات الرسمية فقط (Payhip / مستقل).</p>
 <div class="c">
   <h2>منتج رقمي — 12 دولار</h2>
-  <p>نظام المبيعات والتقسيط والفواتير (Excel / Google Sheets) — تسليم فوري.</p>
-  <a class="btn" href="https://payhip.com/b/jMmQH">اشترِ الآن</a>
-  <a class="btn" href="https://84-13-145-169.sslip.io/">المتجر السحابي</a>
+  <p>نظام المبيعات والتقسيط والفواتير — تسليم فوري بعد الدفع. مناسب للجملة والمنشآت الصغيرة.</p>
+  <a class="btn" id="buy" href="https://payhip.com/b/jMmQH?utm_source=ghpages_forhire&utm_medium=content&utm_campaign=attract_v1">اشترِ الآن</a>
+  <a class="btn" href="https://84-13-145-169.sslip.io/?utm_source=ghpages_forhire&utm_medium=content&utm_campaign=attract_v1">المتجر السحابي</a>
 </div>
 <div class="c">
-  <h2>خدمات</h2>
-  <p>I build Arabic RTL Excel/Google Sheets systems for SMEs (sales, installments, invoices, Nitaqat/HR). Ready product: Arabic installments+invoices workbook $12 instant download. Custom builds via escrow. Portfolio: Excel/Sheets Arabic systems. Rate: product $12 / custom $100-250. Payhip: https://payhip.com/b/jMmQH</p>
+  <h2>خدمات مخصصة</h2>
+  <p>بناء ملفات Excel/Sheets عربية (مبيعات، تقسيط، مخزون، محاسبة جملة، لوحات HR/نطاقات). التسعير التقريبي للمنتج الجاهز 12$ وللمشاريع المخصصة 100–250$ عبر ضمان المنصة.</p>
 </div>
 <div class="c">
-  <h2>تم الشحن</h2>
-  <p>Built an RTL Arabic sales/installments/invoices workbook for Saudi SMEs. Live on Payhip with PayPal. Free Nitaqat checker on GH Pages as lead magnet. Link: https://payhip.com/b/jMmQH</p>
+  <h2>مغناطيس مجاني</h2>
+  <p><a href="./?utm_source=ghpages_forhire&utm_medium=content&utm_campaign=attract_v1">فحص نطاقات سريع</a> داخل المتصفح — ثم خدمات تقرير/لوحة عند الطلب.</p>
 </div>
-<p><a href="./">فحص نطاقات</a> · تحديث: 2026-11-18T06:50:48.368Z</p>
+<p>تحديث: <span id="ts"></span></p>
+<script>
+document.getElementById('ts').textContent = new Date().toISOString();
+document.getElementById('buy').addEventListener('click', function () {
+  try {
+    navigator.sendBeacon && navigator.sendBeacon('https://84-13-145-169.sslip.io/api/click', new Blob([JSON.stringify({
+      productId: 'payhip-jMmQH',
+      utm_source: 'ghpages_forhire',
+      utm_medium: 'content',
+      utm_campaign: 'attract_v1'
+    })], { type: 'application/json' }));
+  } catch (e) {}
+});
+</script>
 </body>
 </html>
